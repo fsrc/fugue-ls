@@ -25,6 +25,8 @@
   },
   "homepage": "https://github.com/fsrc/fugue-ls#readme",
   "dependencies": {
+    "async-ls": "0.0.3",
+    "chalk": "^2.3.2",
     "livescript": "^1.5.0",
     "prelude-ls": "^1.1.2"
   }

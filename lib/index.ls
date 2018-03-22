@@ -1,4 +1,4 @@
-require! \prelude-ls : { each }
+require! \prelude-ls : { keys, each }
 
 prelude = require(\prelude-ls)
 fugue   = require(\./fugue)
