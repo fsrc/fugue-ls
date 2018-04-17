@@ -1,4 +1,6 @@
 require! \prelude-ls : {
+  drop
+  take
   fold
   is-type
   keys
@@ -8,6 +10,8 @@ require! \prelude-ls : {
   apply
   values
   last
+  camelize
+  repeat
 
   split
   join
@@ -28,6 +32,20 @@ require! \chalk : {
   yellow: as-key
   blue: as-argument
 }
+require! \string_decoder : { StringDecoder }
+
+export acc = (initial, apply) ->
+  accumulated = initial
+  ->
+    if accumulated == null
+    then accumulated := it
+    else if it?
+    then accumulated := apply(accumulated, it)
+    else {} <<< accumulated
+
+export acc-obj = ->
+  acc {}, (accumulated, obj) -> accumulated <<< obj
+
 
 export count-if = (fn, list) -->
   list |> fold((acc, itm) ->
@@ -72,6 +90,45 @@ export debug = (...) ->
   arguments
   |> values
   |> last
+
+export chunkup = (length, fn, data) -->
+  do ->
+    source = data
+    while source.length > 0
+      fn( source |> take length )
+      source := source |> drop length
+
+export dechunk = (fn) ->
+  do ->
+    decoder = new StringDecoder \utf8
+    last-string = ""
+    (chunk) -> last-string := fn(last-string + decoder.write(chunk))
+# pray = say
+pray = -> it
+
+export stack = (v) ->
+  do ->
+    state = []
+    state.push v if v?
+
+    inspect: -> state
+    push:    -> pray \push, it; state.push it
+    pop:     -> pray \pop,  state[state.length - 1]; state.pop!
+    prev:    -> pray \peek, state[state.length - 2]; state[state.length - 2]
+    peek:    -> state[state.length - 1]
+
+export itr = (amount, fn) ->
+  position = 1
+  res: ~> position := 1
+  dec: ~>
+    while position > 0
+      position := position - 1
+      it = fn(it)
+
+export whi = (acc, fn, acc2, fn2) ->
+  while acc
+    acc = fn(acc)
+    acc2 = fn2(acc2)
 
 export replace = (a, b, str) --> str.replace(a, b)
 
@@ -152,9 +209,15 @@ export promise = (fn) ->
       on-error: null
       on-next : []
       on-finaly  : null
+    fun: {}
+
+  # Create the public interface that should be passed
+  # back to the user of the promise
+  pub = {}
+
 
   # Define next function
-  priv.next = ->
+  priv.fun.next = ->
     next-fn = first priv.state.on-next
     priv.state.on-next = tail priv.state.on-next
     if next-fn?
@@ -162,20 +225,28 @@ export promise = (fn) ->
     else priv.state.on-finaly! if priv.state.on-finaly?
 
   # Define fail function
-  priv.fail = (err) ->
+  priv.fun.fail = (err) ->
     priv.state.on-error(err) if priv.state.on-error
     priv.state.on-next = []
 
-  priv.nerr = (fn) ->
+  priv.fun.nerr = (fn) ->
     (err, result) ->
       if err?
         priv.fail(err)
       else
         fn(result)
 
-  # Create the public interface that should be passed
-  # back to the user of the promise
-  pub = {}
+  priv.fun.event = (name) ->
+    key = if name |> is-type 'String'
+    then name
+    else if name |> is-type 'Object'
+    then keys(name).0
+
+    priv.fun[key] = ->
+    pub[key] = (fn) ->
+      priv.fun[key] = fn
+      pub
+
 
   # Define static functionality error and finaly
   pub.error = (fn) ->
@@ -189,7 +260,7 @@ export promise = (fn) ->
 
   # Create a constructor of the object by preloading the object
   # with fail and next functions
-  constr = fn(priv.fail, priv.next, priv.nerr)
+  constr = fn(priv.fun)
 
   # Return a function that takes any number of arguments
   (...) ->
@@ -206,3 +277,33 @@ export promise = (fn) ->
         pub
 
     pub
+
+export decimals = ->
+  return 0 if(Math.floor(it) == it)
+
+  it.toString().split(".")[1].length || 0
+
+export pad-char-left = (char, len, str) -->
+  (repeat(len, char) + str).slice(-len);
+
+export pad-char-right = (char, len, str) -->
+  (str + repeat(len, char)).substring(0, len);
+
+export pad-left = (str, len) ->
+  (repeat(len, " ") + str).slice(-len);
+
+export pad-right = (str, len) ->
+  (str + repeat(len, " ")).substring(0, len);
+
+export pad = pad-left
+
+format-csv-string = (value) ->
+  if is-type('String', value)
+  then '"'+value+'"'
+  else pad-left(value.to-string!replace('.', ','), 12)
+
+export format-csv = fold((acc, value) ->
+  acc =  keys(value).join("\t") + "\n" if not acc?
+  acc += map(format-csv-string, values(value)).join("\t") + "\n"
+  acc
+, null)

@@ -1,0 +1,25 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+actual-indent	lib/fugue.ls	/^      actual-indent = 1$/;"	v
+format-csv-string	lib/fugue.ls	/^format-csv-string = (value) ->$/;"	f
+i	lib/fugue.ls	/^  i = 0$/;"	v
+inspect-leaf	lib/fugue.ls	/^inspect-leaf = (itm) ->$/;"	f
+last-string	lib/fugue.ls	/^    last-string = ""$/;"	v
+module.exports	lib/index.ls	/^module.exports = {}$/;"	v
+position	lib/fugue.ls	/^  position = 1$/;"	v
+pray	lib/fugue.ls	/^pray = -> it$/;"	f
+priv	lib/fugue.ls	/^  priv =$/;"	v
+priv.fun.event	lib/fugue.ls	/^  priv.fun.event = (name) ->$/;"	f
+priv.fun.fail	lib/fugue.ls	/^  priv.fun.fail = (err) ->$/;"	f
+priv.fun.nerr	lib/fugue.ls	/^  priv.fun.nerr = (fn) ->$/;"	f
+priv.fun.next	lib/fugue.ls	/^  priv.fun.next = ->$/;"	f
+priv.state.on-next	lib/fugue.ls	/^    priv.state.on-next = []$/;"	v
+pub	lib/fugue.ls	/^  pub = {}$/;"	v
+pub.error	lib/fugue.ls	/^  pub.error = (fn) ->$/;"	f
+pub.finaly	lib/fugue.ls	/^  pub.finaly = (fn) ->$/;"	f
+source	lib/fugue.ls	/^    source = data$/;"	v
+state	lib/fugue.ls	/^    state = []$/;"	v
