@@ -21,5 +21,7 @@ priv.state.on-next	lib/fugue.ls	/^    priv.state.on-next = []$/;"	v
 pub	lib/fugue.ls	/^  pub = {}$/;"	v
 pub.error	lib/fugue.ls	/^  pub.error = (fn) ->$/;"	f
 pub.finaly	lib/fugue.ls	/^  pub.finaly = (fn) ->$/;"	f
+randomIndex	lib/fugue.ls	/^  randomIndex = void$/;"	v
 source	lib/fugue.ls	/^    source = data$/;"	v
 state	lib/fugue.ls	/^    state = []$/;"	v
+temporaryValue	lib/fugue.ls	/^  temporaryValue = void$/;"	v

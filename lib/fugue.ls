@@ -307,3 +307,18 @@ export format-csv = fold((acc, value) ->
   acc += map(format-csv-string, values(value)).join("\t") + "\n"
   acc
 , null)
+
+export shuffle = (array) ->
+  currentIndex = array.length
+  temporaryValue = void
+  randomIndex = void
+
+  while 0 isnt currentIndex
+    randomIndex = Math.floor Math.random! * currentIndex
+    currentIndex -= 1
+    temporaryValue = array[currentIndex]
+    array[currentIndex] = array[randomIndex]
+    array[randomIndex] = temporaryValue
+
+  array
+
