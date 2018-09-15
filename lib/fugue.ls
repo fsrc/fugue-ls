@@ -55,11 +55,19 @@ export count-if = (fn, list) -->
     )(0)
 
 
+
 export map-bool = (pred, truthy, falsy, list) -->
   list |> map (itm) ->
     if pred(itm)
     then truthy(itm)
     else falsy(itm)
+
+export s-map = (iterator, summarizer, list) -->
+  serial-map(
+    iterator
+    list
+    summarizer
+    )
 
 export pl-map = (threads, iterator, summarizer, list) -->
   parallel-map-limited(
