@@ -5,10 +5,11 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 actual-indent	lib/fugue.ls	/^      actual-indent = 1$/;"	v
-format-csv-string	lib/fugue.ls	/^format-csv-string = (value) ->$/;"	f
+format-csv-string	lib/fugue.ls	/^format-csv-string = (width, value) -->$/;"	f
 i	lib/fugue.ls	/^  i = 0$/;"	v
 inspect-leaf	lib/fugue.ls	/^inspect-leaf = (itm) ->$/;"	f
 last-string	lib/fugue.ls	/^    last-string = ""$/;"	v
+manipulator	lib/fugue.ls	/^  manipulator = (acc, value) ->$/;"	f
 module.exports	lib/index.ls	/^module.exports = {}$/;"	v
 position	lib/fugue.ls	/^  position = 1$/;"	v
 pray	lib/fugue.ls	/^pray = -> it$/;"	f

@@ -300,21 +300,26 @@ export pad-char-right = (char, len, str) -->
 export pad-left = (str, len) ->
   (repeat(len, " ") + str).slice(-len);
 
+export pad-leftx = (len, str) --> pad-left(str, len)
+
 export pad-right = (str, len) ->
   (str + repeat(len, " ")).substring(0, len);
 
 export pad = pad-left
 
-format-csv-string = (value) ->
+format-csv-string = (width, value) -->
   if is-type('String', value)
   then '"'+value+'"'
-  else pad-left(value.to-string!replace('.', ','), 12)
+  else pad-leftx(width, value.to-string!) #replace('.', ','))
 
-export format-csv = fold((acc, value) ->
-  acc =  keys(value).join("\t") + "\n" if not acc?
-  acc += map(format-csv-string, values(value)).join("\t") + "\n"
-  acc
-, null)
+export format-csv = (width, array) ->
+  manipulator = (acc, value) ->
+    acc = map(pad-leftx(width), keys(value)).join(", ") + "\n" if not acc?
+
+    acc += map(format-csv-string(width), values(value)).join(", ") + "\n"
+    acc
+
+  array |> fold(manipulator, null)
 
 export shuffle = (array) ->
   currentIndex = array.length
